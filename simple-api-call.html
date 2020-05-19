@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Simple API call</title>
+</head>
+<body>
+</body>
+
+<script>
+	(async() => {
+
+		const API_URL = "https://dp.isiaurbino.net/api/x-publishing/workshop-coding";
+	
+
+		// fetch the data from API and store it inside 
+		// a variable called res
+		const res = await fetch(API_URL).then(r => r.json());
+
+
+		// print what ever is inside rs
+		console.log(res);
+
+
+		// print data attribute
+		console.log(res.data);
+
+
+		// print totalSize attribute
+		console.log(res.totalSize);
+
+
+		// print the first item in data list (which is actually a file)
+		console.log( res.data[0] );
+
+
+		// print the third item in data list (which is actually a file)
+		console.log( res.data[3] );
+
+
+		// print the name of the metadata of the 4th file in the list
+		console.log( res.data[4].metadata.name );
+
+
+		document.body.innerHTML = res.data[4].content.html;
+
+
+
+		var marcoFileData = res.data[9];
+
+
+		var coolImage = document.createElement("img");
+
+		coolImage.src = marcoFileData.content.originalUrl;
+
+		document.body.append(coolImage);
+
+
+		res.data.forEach(file => {
+			var h = document.createElement("h2");
+			h.innerHTML = file.metadata.name;
+			document.body.append(h);
+		});
+
+
+	})();
+
+</script>
+</html>

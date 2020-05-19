@@ -1,0 +1,28 @@
+{
+	
+	"designer": {
+		"firstname": "foo",
+		"lastname": "bar"
+	},
+
+	"size": {
+		"width": "70",
+		"height": "100",
+		"unit": "cm"
+	},
+
+
+	"year": 2020,
+	"is_published": true,
+	"title": "The cool poster",
+
+	"colors": [ 
+		"red", 
+		"green", 
+		"pink" 
+	],
+
+	"attr": "val",
+
+
+}
