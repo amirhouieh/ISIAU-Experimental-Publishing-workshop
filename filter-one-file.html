@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>audio example</title>
+</head>
+
+<body>
+
+
+</body>
+
+<script>
+	let isItAllowed;
+
+	const isAudio = (file) => {
+		return file.metadata.mimeType.indexOf("audio/") > -1;
+	}
+
+	(async() => {
+
+		// we store the url to the api enpoint
+		// where we want to get the data from
+		const SETTINGS_URL = "https://dp.isiaurbino.net/api/x-publishing/workshop-coding/marcop/settings";
+		// fetch the data from API and store it inside 
+		// a variable called res
+		const res = await fetch(SETTINGS_URL).then(r => r.json());
+		const settings = res.data[0];
+
+		if(settings.content.sheets[0].rows[1][1] === "x"){
+			isItAllowed = true;
+		}
+
+		console.log(settings)
+
+
+	})();
+</script>
+</html>

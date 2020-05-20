@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>audio example</title>
+	<style type="text/css">
+		
+		span + span{
+			margin-left: 6px;
+		}
+
+		img{
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 300px;
+			z-index: -1;
+		}
+
+	</style>
+</head>
+
+<body>
+
+
+</body>
+
+<script>
+
+
+	// ignore this
+	const isGDoc = (file) => {
+		return file.metadata.mimeType === "application/vnd.google-apps.document";
+	}
+
+
+	// ignore this
+	const isImage = (file) => {
+		return file.metadata.mimeType.indexOf("image/") > -1;
+	}
+
+	function getRandomInt(min, max) {
+	  min = Math.ceil(min);
+	  max = Math.floor(max);
+	  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+	}
+
+
+	(async() => {
+
+		const API_URL = "https://dp.isiaurbino.net/api/x-publishing/workshop-coding/nina"
+		const res = await fetch(API_URL).then(r => r.json());
+
+
+		const imagePlaceHolder = document.createElement("img");
+		document.body.append(imagePlaceHolder);
+
+
+		// is going to find the first GDoc document it finds and return and 
+		// stores inside a variable named textDoc
+		const textDoc = res.data.find(isGDoc);
+
+
+		// collect all the files which matches the criteria which is isImage
+		const images = res.data.filter(isImage);
+
+
+		const para = document.createElement("p");
+
+
+		const words = textDoc.content.text.split(" ");
+
+
+		const responsiveWords = [
+			"apertura",
+			"suo",
+			"degli"
+		]
+
+		words.forEach(word => {
+			const elem = document.createElement("span");
+			elem.innerHTML = word;
+
+			elem.onmouseenter = function(){
+					
+				const randomIndexForImages = getRandomInt(0, 9);
+				const randomImageFile = images[ randomIndexForImages ];
+				imagePlaceHolder.src = randomImageFile.content.originalUrl;
+
+				// if and on if the word is inside the responsive words list
+				if( responsiveWords.indexOf( word ) > -1 ){
+					// const randomIndexForImages = getRandomInt(0, 9);
+					// const randomImageFile = images[ randomIndexForImages ];
+					// imagePlaceHolder.src = randomImageFile.content.originalUrl;
+				}
+			}
+
+			para.append(elem);
+
+		})
+
+		// para.innerHTML= textDoc.content.text;
+
+		document.body.append(para);
+
+
+
+	})();
+</script>
+</html>
