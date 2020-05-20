@@ -1,0 +1,63 @@
+	<!DOCTYPE html>
+<html>
+
+<head>
+	<title>audio example</title>
+</head>
+
+<body>
+
+
+</body>
+
+<script>
+
+	const isAudio = (file) => {
+		return file.metadata.mimeType.indexOf("audio/") > -1;
+	}
+
+	function createAudioElement(file) {
+		const audioElement = document.createElement("audio");
+
+		audioElement.setAttribute("controls", "true");
+
+		file.content.urls.forEach(urlObj => {
+			const sourceElement = document.createElement("source");
+			sourceElement.src = urlObj.url;
+			sourceElement.type = urlObj.format.type;
+
+			audioElement.append(sourceElement);
+
+		})
+
+		document.body.append(audioElement);
+	}
+
+
+	(async() => {
+
+		// we store the url to the api enpoint
+		// where we want to get the data from
+		const API_URL = "https://dp.isiaurbino.net/api/x-publishing/workshop-coding/carlo";
+		// fetch the data from API and store it inside 
+		// a variable called res
+		const res = await fetch(API_URL).then(r => r.json());
+
+
+		const onlyAudioFiles = res.data.filter(isAudio);
+
+		createAudioElement(onlyAudioFiles[0]);
+
+
+
+		res.data.forEach(file => {
+
+			// if(isAudio(file)){
+			// 	createAudioElement(file);
+			// }
+
+		})
+
+	})();
+</script>
+</html>
