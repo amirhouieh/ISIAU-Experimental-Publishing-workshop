@@ -41,7 +41,7 @@
 
 
 	// this is a fucntion which gets a file as input and expect it to be a Gdoc
-	function createHtmlForGDoc( gdoc ){
+	function createHtmlForGDoc( gdoc, whatToAppendTo){
 
 		// create a element 
 		const textContainer = document.createElement( "div" );
@@ -66,7 +66,7 @@
 
 
 		// add the element to a actuall exiting lement which we have already added to the page above
-		lContainer.append(textContainer);
+		whatToAppendTo.append(textContainer);
 	}
 
 
@@ -108,31 +108,34 @@
 
 		// we store the url to the api enpoint
 		// where we want to get the data from
-		const API_URL = "https://dp.isiaurbino.net/api/x-publishing/workshop-coding/laura";
+		const API_URL = "https://dp.isiaurbino.net/api/x-publishing/workshop-coding/fabio";
 		// fetch the data from API and store it inside 
 		// a variable called res
 		const res = await fetch(API_URL).then(r => r.json());
 
 	
+		createHtmlForGDoc(res.data[0], lContainer);
+		createHtmlForGDoc(res.data[1], rContainer);
+
 	
 
 		// ittirate over all the files return by the API endpoint 
 		// check and visualize them deponding on their type
 
-		res.data.forEach((file) => {
+		// res.data.forEach((file) => {
 
-			// if they are GDOC then call function createHtmlForGDoc
-			if( isGDoc(file) ){
-				createHtmlForGDoc(file);
-			}
+		// 	// if they are GDOC then call function createHtmlForGDoc
+		// 	if( isGDoc(file) ){
+		// 		createHtmlForGDoc(file);
+		// 	}
 
 
-			// if they are image then call function createImageElement
-			if( isImage(file) ){
-				createImageElement(file);
-			}
+		// 	// if they are image then call function createImageElement
+		// 	if( isImage(file) ){
+		// 		createImageElement(file);
+		// 	}
 
-		})
+		// })
 
 
 
@@ -140,7 +143,6 @@
 
 		/*
 	
-
 		create html element 
 		const elementName = document.createElement("name of the tag")
 
@@ -148,6 +150,24 @@
 		assign a classname to an element 
 		elementName.className = "whateverclassnameyouwant";
 
+
+		aasing html attribute (the content of an element)
+		elementName.innerHTML = "<div>some html</div>"
+
+
+		aasing other attribute (like image src)
+		elementName.src = "hjsdhjdshjsdjjhs"
+
+	
+
+		adding the element to another element
+		thatElement.append(thisElement)
+
+
+		adding the element to actual dom (body)
+		document.body.append( elementName )
+
+	
 
 		*/
 
