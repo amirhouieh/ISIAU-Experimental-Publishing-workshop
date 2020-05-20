@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Example 1 - day 2</title>
+	<style type="text/css">
+
+		.left, .right{
+			width: 40%;
+			/*display: inline-block;*/
+			float: left;
+		}
+
+		img{
+			width: 100%;
+		}
+
+
+	</style>
+</head>
+
+<body>
+
+
+</body>
+
+<script>
+
+
+	// creating two elemtns and called them lContainer & rContainer
+	const lContainer = document.createElement("div");
+	const rContainer = document.createElement("div");
+
+	// assigning class names to a element
+	lContainer.className = "left";
+	rContainer.className = "right";
+
+	// add these element to actual page
+	document.body.append(lContainer);
+	document.body.append(rContainer);
+
+
+	// this is a fucntion which gets a file as input and expect it to be a Gdoc
+	function createHtmlForGDoc( gdoc ){
+
+		// create a element 
+		const textContainer = document.createElement( "div" );
+		textContainer.className = "text"
+
+		const titleElement = document.createElement("h2");
+		titleElement.className = "title";
+
+		// assign whatever is inside data to html element 
+		titleElement.innerHTML = gdoc.metadata.name;
+
+
+		const bodyTextElement = document.createElement("div");
+		bodyTextElement.className = "body-text";
+		bodyTextElement.innerHTML = gdoc.content.html;
+
+
+
+		// add the elements to another element
+		textContainer.append(titleElement);
+		textContainer.append(bodyTextElement);
+
+
+		// add the element to a actuall exiting lement which we have already added to the page above
+		lContainer.append(textContainer);
+	}
+
+
+	function createImageElement(file){
+		const imageWrapper = document.createElement("div");
+		imageWrapper.className = "image";
+
+
+		const img = document.createElement("img");
+		img.src = file.content.originalUrl;
+
+		const captionElement = document.createElement("div");
+		captionElement.className = "caption";
+		captionElement.innerHTML = file.content.title;
+
+		imageWrapper.append(img);
+		imageWrapper.append(captionElement);
+
+		rContainer.append(imageWrapper);
+	}
+
+
+
+	// ignore this
+	const isGDoc = (file) => {
+		return file.metadata.mimeType === "application/vnd.google-apps.document";
+	}
+
+
+	// ignore this
+	const isImage = (file) => {
+		return file.metadata.mimeType.indexOf("image/") > -1;
+	}
+
+
+
+	(async() => {
+
+
+		// we store the url to the api enpoint
+		// where we want to get the data from
+		const API_URL = "https://dp.isiaurbino.net/api/x-publishing/workshop-coding/laura";
+		// fetch the data from API and store it inside 
+		// a variable called res
+		const res = await fetch(API_URL).then(r => r.json());
+
+	
+	
+
+		// ittirate over all the files return by the API endpoint 
+		// check and visualize them deponding on their type
+
+		res.data.forEach((file) => {
+
+			// if they are GDOC then call function createHtmlForGDoc
+			if( isGDoc(file) ){
+				createHtmlForGDoc(file);
+			}
+
+
+			// if they are image then call function createImageElement
+			if( isImage(file) ){
+				createImageElement(file);
+			}
+
+		})
+
+
+
+
+
+		/*
+	
+
+		create html element 
+		const elementName = document.createElement("name of the tag")
+
+
+		assign a classname to an element 
+		elementName.className = "whateverclassnameyouwant";
+
+
+		*/
+
+
+
+
+
+
+	})();
+</script>
+</html>
