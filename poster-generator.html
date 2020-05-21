@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="left">
+            <div class="poster-container">
+                <div class="text-layout">
+                    <div class="top-left">#WS</div>
+                    <div class="top-right"></div>
+                    <div class="bottom-left"></div>
+                    <div class="bottom-right"></div>
+                </div>
+                <div class="image-grid">
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="right">
+        </div>
+
+    </div>
+
+
+</body>
+
+<script>
+
+
+    function random(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+    }
+
+    function shuffle(a) {
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+
+    (async() => {
+
+        const BASE_URL = "https://dp.isiaurbino.net/api/x-publishing/workshop-coding";
+
+        const jpgs = await fetch(BASE_URL+"?filter[metadata.mimeType]=image%2Fjpg&limit=50").then(r => r.json());
+        const jpegs = await fetch(BASE_URL+"?filter[metadata.mimeType]=image%2Fjpeg&limit=50").then(r => r.json());
+        const pngs = await fetch(BASE_URL+"?filter[metadata.mimeType]=image%2Fpng&limit=50").then(r => r.json());
+        const gifs = await fetch(BASE_URL+"?filter[metadata.mimeType]=image%2Fgif&limit=50").then(r => r.json());
+
+        const gDocs = await fetch(BASE_URL+"?filter[metadata.mimeType]=application%2Fvnd.google-apps.document&limit=50").then(r => r.json());
+
+        const allImages = [];
+
+        gDocs.data.forEach(f => {
+            f.content.images.forEach(fi => {
+                allImages.push(fi);
+            })
+        })  
+
+        allImages.concat( jpgs.data.map(f => f.concat) );
+        allImages.concat( jpegs.data.map(f => f.concat) );
+        allImages.concat( pngs.data.map(f => f.concat) );
+        allImages.concat( gifs.data.map(f => f.concat) );
+
+
+        //  your work
+        const imageGrid = document.querySelector(".image-grid");
+
+        const maxNumberOfImages = 5;
+        const minNumberOfImages = 2;
+
+
+        function generateNewPoster(){
+                    
+            const selectedImages = shuffle(allImages).slice(0, random(minNumberOfImages, maxNumberOfImages));
+
+            console.log(selectedImages);
+            selectedImages.forEach(imageContent => {
+                const image = document.createElement("img");
+                image.src = imageContent.responsiveUrls[2] + ".jpg";
+                // generative design/layout + random stuff
+                imageGrid.append(image);
+            })
+        }
+
+
+        generateNewPoster();
+
+
+
+
+    })();
+
+</script>
+
+</html>
+
+
+
