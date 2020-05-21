@@ -68,7 +68,7 @@
 		const para = document.createElement("p");
 
 
-		const words = textDoc.content.text.split(" ");
+		const words = textDoc.content.text.replace(/\r?\n|\r/g, "").split(/[ ,]+/);
 
 
 		const responsiveWords = [

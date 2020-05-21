@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>The first print example</title>
+	<script type="text/javascript">
+
+		const onPageLoad = async () => {
+			const API_URL = "https://dp.isiaurbino.net/api/x-publishing/progetti-studenti/experimental-publishing-with-0-0/experimental-publishing-workshop-scratch-pad";
+
+			const res = await fetch(API_URL).then(r => r.json());	
+			const posterElement = document.querySelector(".poster");
+			posterElement.innerHTML = res.data[0].content.html;
+		}
+
+		window.onload = onPageLoad;		
+	</script>
+
+	<style type="text/css">
+			
+		.poster{
+			width: 50cm;
+			height: 70cm;
+			transform: scale(0.25);
+			border: 1px dotted black;
+			transform-origin: top left;
+		}
+
+
+		@media print{
+
+			@page {
+				margin: 0;
+				width: 50cm;
+				height: 70cm;
+			}
+
+			body, html{
+				margin: 0;
+			}
+
+			.poster{
+				width: 50cm;
+				height: 70cm;
+			}
+
+
+			h2{
+				page-break-before: always;
+			}
+
+			p{
+				color: blue;
+				font-family: monospace;
+				font-size: 32pt;
+				columns: 2;
+			}
+
+
+		}
+
+	</style>
+
+</head>
+<body>
+	<div class="poster"></div>
+</body>
+</html>
