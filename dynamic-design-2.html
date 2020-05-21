@@ -121,12 +121,22 @@
 	})
 
 	const allImageElements = document.querySelectorAll(".image-container");
+	const alltitleElements = document.querySelectorAll("h2");
 
 
 	function changeTheImage(){
 		for(let i=0; i < allImageElements.length; i++){
 			const imageWrapper = allImageElements[i];
 			imageWrapper.style.opacity = Math.random();
+		}
+	}
+
+	function changeTheTitle(){
+		for(let i=0; i < alltitleElements.length; i++){
+			const title = alltitleElements[i];
+			title.style.fontFamily = listOfSafewWebFonts[ random(0, listOfSafewWebFonts.length) ];
+			title.style.fontSize = random(8, 20) + "px";
+			title.style.marginTop = random(1, 4) + "em"
 		}
 	}
 
@@ -138,7 +148,9 @@
 	}
 
 	setInterval(() => {
-	}, 1000)
+		changeTheImage();
+		changeTheTitle();
+	}, 100)
 
 
 	}
