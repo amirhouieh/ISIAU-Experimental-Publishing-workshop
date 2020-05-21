@@ -81,10 +81,6 @@
 
 	const bigTitle = document.querySelector(".big-title");
 
-	window.onmousemove = () => {
-		bigTitle.style.fontSize = random(40, 200) + "px";
-	}
-
 
 
 	res.data.forEach(imageFIle => {
@@ -125,6 +121,38 @@
 	})
 
 
+
+		const allImageElements = document.querySelectorAll(".image-wrapper");
+
+		window.onmousemove = () => {
+
+			for(let i=0; i < allImageElements.length; i++){
+				const imageWrapper = allImageElements[i];
+				// imageWrapper.style.width = random(10, 40) + "%"
+			}
+
+		}
+
+
+		const button = document.querySelector("button");
+		button.onclick = () => {
+			window.print();
+		}
+
+		button.onclick = function(){
+			window.print();
+		}
+
+		button.addEventListener("click", function(){
+			window.print();
+		})
+
+
+		button.addEventListener("click", () => {
+			window.print();
+		})
+
+
 		
 	}
 
@@ -132,7 +160,7 @@
 </script>
 </head>
 <body>
-
+	<button>Print me!!!</button>
 	<h1 class="big-title">This is the big title</h1>
 
 </body>
