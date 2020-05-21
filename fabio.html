@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>audio example</title>
+	<style type="text/css">
+		.left{
+			width: 300px;
+		}
+		img{
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class="left">
+		<img class="img-placeholder" src="" >
+	</div>
+	<div class="right">
+		<button class="new">NEW</button>
+	</div>
+
+
+</body>
+
+<script>
+
+	let imageFiles;
+	let imageFilesBackup;
+
+	function random(min, max) {
+	  min = Math.ceil(min);
+	  max = Math.floor(max);
+	  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+	}
+
+	const isImage = (file) => {
+		return file.metadata.mimeType.indexOf("image/") > -1;
+	}
+
+
+	const newBtn = document.querySelector(".new");
+	const imgPlaceHolder = document.querySelector(".img-placeholder");
+
+	function showARandomNewImage() {
+		// as soon as the list of images is empty then 
+		// refill it
+		if(imageFiles.length === 0){
+			imageFiles = imageFilesBackup;
+		}
+
+		// we need pick a random image from image Files
+		const randomImageFileIndex = random(0, imageFiles.length-1);
+		const randomImageFile = imageFiles.splice(randomImageFileIndex, 1).pop();
+
+
+		// we visualize the content of the image
+		imgPlaceHolder.src = randomImageFile.content.originalUrl;
+
+	}
+
+
+	(async() => {
+
+	
+		const URL = "https://dp.isiaurbino.net/api/x-publishing/workshop-coding/fabio2";
+		const res = await fetch(URL).then(r => r.json());
+
+
+		// we filter out all images
+		imageFiles = res.data.filter(isImage);
+
+		// make a copy and backup of files
+		imageFilesBackup = imageFiles.slice();
+
+
+		showARandomNewImage();
+
+		newBtn.onclick = () => {
+			showARandomNewImage();
+		}
+
+	})();
+</script>
+</html>
