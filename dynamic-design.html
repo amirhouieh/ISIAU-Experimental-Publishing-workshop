@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dynamic Design</title>
+	
+	<style type="text/css">
+		.image-wrapper {
+		    display: inline-block;
+		    width: 10%;
+		}
+
+		img{
+			width: 100%;
+		}
+
+		.big-title{
+			position: fixed;
+			left: 0;
+			top: 0;
+			mix-blend-mode: multiply;
+			color: red;
+		}
+
+	</style>
+
+	<script type="text/javascript">
+
+	function random(min, max) {
+	  min = Math.ceil(min);
+	  max = Math.floor(max);
+	  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+	}
+
+	function getRandomColor() {
+	  var letters = '0123456789ABCDEF';
+	  var color = '#';
+	  for (var i = 0; i < 6; i++) {
+	    color += letters[Math.floor(Math.random() * 16)];
+	  }
+	  return color;
+	}
+
+
+	const onPageLoad = async () => {
+		const API_URL = "https://dp.isiaurbino.net/api/x-publishing/workshop-coding/alessandro/cover?limit=100";
+
+	const res = await fetch(API_URL).then(r => r.json());	
+
+
+	const blendingModes = [
+			"normal", 
+			"multiply",
+			"screen",
+			"overlay",
+			"darken",
+			"lighten",
+			"color-dodge",
+			"color-burn",
+			"difference",
+			"exclusion",
+			"hue",
+			"saturation",
+			"color",
+			"luminosity",
+	];
+
+
+	const listOfSafewWebFonts = [
+		"Arial",
+		"Verdana",
+		"Trebuchet MS",
+		"Times New Roman",
+		"Didot",
+		"American Typewriter",
+		"Andale Mono",
+		"Courier",
+		"Bradley Hand",
+		"Luminari"
+	];
+
+
+	const bigTitle = document.querySelector(".big-title");
+
+	window.onmousemove = () => {
+		bigTitle.style.fontSize = random(40, 200) + "px";
+	}
+
+
+
+	res.data.forEach(imageFIle => {
+
+		const imageWrapper = document.createElement("div");
+		imageWrapper.className = "image-wrapper";
+
+		imageWrapper.style.width = random(1, 40) + "%";
+
+		imageWrapper.style.backgroundColor = getRandomColor();
+
+
+		const img = document.createElement("img");
+		img.src = imageFIle.content.responsiveUrls[2] + ".jpg";
+
+		img.style.mixBlendMode = blendingModes[ random(0, blendingModes.length) ];
+
+
+
+		const fontSize = random(5, 30);
+		const fontFamily = listOfSafewWebFonts[ random(0, listOfSafewWebFonts.length) ];
+
+		const title = document.createElement("h2");
+		title.innerText = imageFIle.content.title;
+		
+		title.style.fontSize =  fontSize + "px";
+		title.style.fontFamily = fontFamily;
+
+		imageWrapper.append(title);
+
+
+		if( random(0, 100) > 20 ){
+			imageWrapper.append(img);	
+		}
+		
+		document.body.append( imageWrapper )
+
+	})
+
+
+		
+	}
+
+	window.onload = onPageLoad;		
+</script>
+</head>
+<body>
+
+	<h1 class="big-title">This is the big title</h1>
+
+</body>
+</html>
