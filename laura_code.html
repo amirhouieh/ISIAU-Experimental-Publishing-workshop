@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif&display=swap" rel="stylesheet">
+	<title>
+		Image from GDdoc
+	</title>
+	<style type="text/css">
+
+		body {
+			background-color: #FFFFFF;
+
+		}
+
+		.text-wrapper {
+			color: #000000;
+			font-family: 'IBM Plex Serif', serif;			
+			font-size: 13px;
+			text-align: left;
+			text-indent: 20px;
+			width: 500px;
+
+		}
+
+		.image-wrapper {
+
+			display: inline-block;
+			width: 15%;
+		}
+
+		img{
+			width: 100%;
+		}
+
+
+		body.text .image-wrapper{
+			display: none;
+		}
+
+		body.image .text-wrapper{
+			display: none;
+		}
+
+	</style>
+
+	<script>
+
+	function random(min, max) {
+	  min = Math.ceil(min);
+	  max = Math.floor(max);
+	  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+	}
+
+	function shuffle(a) {
+	    for (let i = a.length - 1; i > 0; i--) {
+	        const j = Math.floor(Math.random() * (i + 1));
+	        [a[i], a[j]] = [a[j], a[i]];
+	    }
+	    return a;
+	}
+
+const isGDoc = (file) => {
+		return file.metadata.mimeType === "application/vnd.google-apps.document";
+	}
+
+const isImage = (file) => {
+		return file.metadata.mimeType.indexOf("image/") > -1;
+	}
+
+(async() => {
+
+		const ELEMENTS_URL = "https://dp.isiaurbino.net/api/x-publishing/workshop-coding/lrascp/story-elements";
+		const res = await fetch(ELEMENTS_URL).then(r => r.json());
+
+		const doc = res.data[0];
+
+		const images = res.data[0].content.images;
+
+		const selectedImagesForUser = shuffle(images).slice(0, random(2, images.length));
+
+
+		for (j = 0; j < selectedImagesForUser.length; j++) {
+			const docData = selectedImagesForUser[j];
+
+			const textContainer = document.createElement("div");
+			textContainer.className = "text-wrapper";
+
+  			textContainer.innerHTML = docData.alt;
+			document.body.append(textContainer);
+			console.log(textContainer.innerHTML);
+
+
+			const imageWrapper = document.createElement("div");
+			imageWrapper.className = "image-wrapper";
+
+
+			const img = document.createElement("img");
+			img.src = docData.responsiveUrls[2] + ".jpg";
+
+			imageWrapper.append(img);			
+			document.body.append(imageWrapper)
+		}
+
+
+
+		const imageBtn = document.querySelector(".image-btn");
+		imageBtn.onclick = () => {
+			document.body.className = "image";
+		}
+
+
+		const textBtn = document.querySelector(".text-btn");
+		textBtn.onclick = () => {
+			document.body.className = "text";
+		}
+
+
+
+	})();
+</script>
+</head>
+<body class="text">
+	<button class="image-btn">IMAGE</button>
+	<button class="text-btn">TEXT</button>
+</body>
+
+</html>
