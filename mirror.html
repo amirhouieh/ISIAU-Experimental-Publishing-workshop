@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+    <script>
+        const docId = `1_XJx7PwPJwnJ9LHeBm6t-CFMQ_mdTwuObkxHXQFrn8U`;
+        const url = `https://docs.google.com/feeds/download/documents/export/Export?id=${docId}&exportFormat=html`;
+
+        fetch(url)
+            .then(res => {
+                console.log(res);
+                return res.text()
+            })
+            .then(data => {
+
+                const doc = document.createElement( 'html' );
+                const container = document.querySelector(".container");
+                doc.innerHTML = data;
+
+                const head = doc.children[0];
+                const body = doc.children[1];
+
+                // if you want to have the style from Google Doc enable the following line
+                document.head.innerHTML += head.innerHTML;
+
+                document.body.innerHTML = body.innerHTML;
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
+    </script>
+
+</head>
+
+<body>
+
+</body>
+</html>
